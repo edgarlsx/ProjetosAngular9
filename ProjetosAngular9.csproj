@@ -1,0 +1,106 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\final\calculadora\.angular-cli.json" />
+    <Content Include="ClientApp\final\calculadora\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\calculadora\package.json" />
+    <Content Include="ClientApp\final\calculadora\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\calculadora\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\calculadora\tsconfig.json" />
+    <Content Include="ClientApp\final\calculadora\tslint.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\.angular-cli.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\package.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\tsconfig.json" />
+    <Content Include="ClientApp\final\conversor-de-moedas\tslint.json" />
+    <Content Include="ClientApp\final\dashboard\.angular-cli.json" />
+    <Content Include="ClientApp\final\dashboard\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\dashboard\package.json" />
+    <Content Include="ClientApp\final\dashboard\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\dashboard\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\dashboard\tsconfig.json" />
+    <Content Include="ClientApp\final\dashboard\tslint.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\.angular-cli.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\package.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\tsconfig.json" />
+    <Content Include="ClientApp\final\gerenciador-de-tarefas\tslint.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\.angular-cli.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\package.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\tsconfig.json" />
+    <Content Include="ClientApp\final\jogo-da-velha\tslint.json" />
+    <Content Include="ClientApp\final\ola-mundo\.angular-cli.json" />
+    <Content Include="ClientApp\final\ola-mundo\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\ola-mundo\package.json" />
+    <Content Include="ClientApp\final\ola-mundo\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\ola-mundo\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\ola-mundo\tsconfig.json" />
+    <Content Include="ClientApp\final\ola-mundo\tslint.json" />
+    <Content Include="ClientApp\final\projeto-final\.angular-cli.json" />
+    <Content Include="ClientApp\final\projeto-final\e2e\tsconfig.e2e.json" />
+    <Content Include="ClientApp\final\projeto-final\package.json" />
+    <Content Include="ClientApp\final\projeto-final\src\tsconfig.app.json" />
+    <Content Include="ClientApp\final\projeto-final\src\tsconfig.spec.json" />
+    <Content Include="ClientApp\final\projeto-final\tsconfig.json" />
+    <Content Include="ClientApp\final\projeto-final\tslint.json" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>
